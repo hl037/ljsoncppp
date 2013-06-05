@@ -141,7 +141,7 @@ public:
    template<class T>
    T getAttr(const string & k, bool * ok = nullptr)
    {
-      auto it = find("auto-check-updates");
+      auto it = find(k);
       if(it == end())
       {
          if(ok) *ok = false;
@@ -150,9 +150,9 @@ public:
       return it->second->get<T>(ok);
    }
 
-   Value * getValAttr(const string & k, bool * ok = nullptr)
+   Value * getValAttr(const string & k)
    {
-      auto it = find("auto-check-updates");
+      auto it = find(k);
       if(it == end())
       {
          return nullptr;
