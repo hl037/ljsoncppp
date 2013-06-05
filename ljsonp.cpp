@@ -135,7 +135,7 @@ void Value::setNull()
 #undef Value__get
 #undef Value__set
 
-#define NextChar(c, in) c=in.get(), cerr<<(char)c
+#define NextChar(c, in) c=in.get()
 void Value::destroy()
 {
    switch(t)
@@ -289,7 +289,8 @@ string Parser::readString()
 
 Value * Parser::readArray()
 {
-   Array * a = new Array(10);
+   Array * a = new Array();
+   a->reserve(10);
 
    if(!c) NextChar(c, in);
    for(;;NextChar(c, in))
@@ -345,8 +346,8 @@ Value * Parser::readObject()
          if(!c) NextChar(c, in);
          while(c != ':')
          {
-            NextChar(c, in);
             if(!isSpace(c)) goto FAIL;
+            NextChar(c, in);
          }
          c=0;
          Value * v = readValue();
