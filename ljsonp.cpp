@@ -452,6 +452,89 @@ Value * Parser::parse(istream &in)
    return p.readValue();
 }
 
+Writter::Writter(ostream &_out) :
+out(_out)
+{
+   out.precision(35);
+   out.setf(ios::scientific, ios::floatfield);
+}
+
+void Writter::indent(int n)
+{
+   for(int i=0 ; i<n ; ++i)
+   {
+      out<<"   ";
+   }
+}
+
+void Writter::write(Value *v, int ind)
+{
+   if(!v) return;
+   switch(v->type())
+   {
+   case NUMBER:
+   {
+      long double val = v->get<long double>();
+      int val2 = val;
+      if(val == (long double) val2)
+      {
+         out<<val2;
+      }
+      else out<<val;
+      return;
+   }
+   case STRING:
+      out<<"\""<<v->get<string>()<<"\"";
+      return;
+   case BOOL:
+      out<<(v->get<bool>()? "true" : "false");
+      return;
+   case NULL_VALUE:
+      out<<"null";
+      return;
+   case ARRAY:
+   {
+      out<<"["<<endl;
+      Array * a = v->get<Array*>();
+      for(auto it = a->begin(), end = a->end() ; ; )
+      {
+         Value * val = *it;
+         indent(ind+1);
+         write(val, ind+1);
+         if(++it!=end) out<<','<<endl;
+         else break;
+      }
+      out<<endl;
+      indent(ind);
+      out<<"]";
+      return;
+   }
+   case OBJECT:
+      out<<"{"<<endl;
+      Object * o = v->get<Object*>();
+      for(auto it = o->begin(), end = o->end() ; ; )
+      {
+         auto p = *it;
+         indent(ind+1);
+         out<<"\""<<p.first<<"\" : ";
+         write(p.second, ind+1);
+         if(++it!=end) out<<','<<endl;
+         else break;
+      }
+      out<<endl;
+      indent(ind);
+      out<<"}";
+      return ;
+   }
+}
+
+void Writter::write(ostream &out, Value *root)
+{
+   Writter w(out);
+   w.write(root);
+   out<<endl;
+}
+
 }
 
 

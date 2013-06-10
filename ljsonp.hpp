@@ -13,8 +13,12 @@
  */
 
 
+#ifndef LJSONP_H
+#define LJSONP_H
+
 #include <vector>
 #include <iostream>
+#include <ostream>
 #include <istream>
 #include <sstream>
 #include <stack>
@@ -246,6 +250,18 @@ public:
 
 };
 
+class Writter
+{
+protected:
+   ostream & out;
+   Writter(ostream & _out);
+   void indent(int n);
+   void write(Value* v, int ind = 0);
 
+public:
+   static void write(ostream & out, Value * root);
+
+};
 
 }
+#endif // LJSONP_H

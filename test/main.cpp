@@ -74,15 +74,20 @@ void printValue(Value *v, int ind = 0)
 
 int main (int argc, char * argv[])
 {
-   if(argc!=2)
+   if(argc!=3)
    {
-      cout<<"test fichier.json"<<endl;
+      cout<<"test fichier.json sortie.json"<<endl;
       return 0;
    }
 
    ifstream f(argv[1], ifstream::in);
    Value * v = Parser::parse(f);
    printValue(v);
+   cout<<"--------------------------------"<<endl;
+   Writter::write(cout, v);
+   ofstream f2(argv[2], ofstream::out);
+   Writter::write(f2, v);
+   
    delete v;
 
 }
