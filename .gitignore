@@ -2,6 +2,7 @@
 !.gitignore
 !test/main.cpp
 !test/*.json
+!test/*.sh
 !test
 !ljsonp.cpp
 !ljsonp.hpp
