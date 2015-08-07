@@ -269,7 +269,7 @@ string Parser::readString()
             str.put(nb);
             break;
             FAIL:
-            str<<str2;
+            str<<str2.rdbuf();
             break;
          }
          default:
